@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>demo</artifactId>
+        <groupId>com.demo.main</groupId>
+        <version>1.0-BigDataDemo</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>mapreduce-demo</artifactId>
+    <packaging>pom</packaging>
+
+    <properties>
+        <hadoop.common.version>2.6.0</hadoop.common.version>
+        <hadoop.core.version>1.2.1</hadoop.core.version>
+        <hadoop.hdfs.version>2.6.0</hadoop.hdfs.version>
+        <hadoop.auth.version>2.6.0</hadoop.auth.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>${hadoop.common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-core</artifactId>
+            <version>${hadoop.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-hdfs</artifactId>
+            <version>${hadoop.hdfs.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-auth</artifactId>
+            <version>${hadoop.auth.version}</version>
+        </dependency>
+    </dependencies>
+</project>

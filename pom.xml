@@ -7,9 +7,13 @@
     <groupId>com.demo.main</groupId>
     <artifactId>demo</artifactId>
     <version>1.0-BigDataDemo</version>
+    <packaging>pom</packaging>
 
     <modules>
         <module>FlumeDemo</module>
         <module>KafkaDemo</module>
+        <module>mapreduce-demo</module>
     </modules>
+
+
 </project>

@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.demo.kafka</groupId>
-    <artifactId>kafka</artifactId>
+    <artifactId>kafka-demo</artifactId>
     <version>1.0-KafkaDemo</version>
-
+    <packaging>pom</packaging>
 
 </project>
