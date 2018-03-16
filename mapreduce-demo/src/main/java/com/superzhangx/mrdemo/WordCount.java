@@ -66,6 +66,7 @@ public class WordCount {
         job.setReducerClass(WordCountReduce.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
+        job.setNumReduceTasks(1); //数据量允许的情况下可设置为1达到控制文件输出量的目的
 
         for(int i = 0; i < otherArgs.length - 1; i++){
             FileInputFormat.addInputPath(job, new Path(otherArgs[i]));
