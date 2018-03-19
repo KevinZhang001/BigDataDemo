@@ -4,6 +4,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.compress.GzipCodec;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -72,6 +73,9 @@ public class WordCount {
             FileInputFormat.addInputPath(job, new Path(otherArgs[i]));
         }
         FileOutputFormat.setOutputPath(job, new Path(otherArgs[otherArgs.length - 1]));
+        FileOutputFormat.setCompressOutput(job,false); //设置输出是否压缩
+        FileOutputFormat.setOutputCompressorClass(job, GzipCodec.class); //设置压缩格式
+
 
         System.out.println("started .......");
         System.exit(job.waitForCompletion(true) ? 0 : 1);
