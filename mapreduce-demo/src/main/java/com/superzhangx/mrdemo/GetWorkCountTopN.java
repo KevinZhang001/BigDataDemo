@@ -108,6 +108,5 @@ public class GetWorkCountTopN {
 
         System.out.println("started sort job .......");
         System.exit(sortJob.waitForCompletion(true) ? 0 : 1);
-
     }
 }
