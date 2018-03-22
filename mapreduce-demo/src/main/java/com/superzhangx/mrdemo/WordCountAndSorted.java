@@ -9,6 +9,7 @@ import org.apache.hadoop.io.WritableComparator;
 import org.apache.hadoop.io.compress.GzipCodec;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Partitioner;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
@@ -17,6 +18,7 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 /**
@@ -29,7 +31,6 @@ public class WordCountAndSorted {
 
         private IntWritable wordCount = new IntWritable(1);
         private Text word = new Text();
-
         @Override
         public void map(Object key, Text value, Context context)
                 throws IOException, InterruptedException {
@@ -64,6 +65,27 @@ public class WordCountAndSorted {
         @Override
         public int compare(WritableComparable a, WritableComparable b) {
             return -super.compare(a, b);
+        }
+    }
+
+    public static class KeySectionPartitioner<K,V> extends Partitioner<K, V> {
+        public KeySectionPartitioner(){
+
+        }
+
+        @Override
+        public int getPartition(K k, V v, int numReduceTasks) {
+            /**
+             * int值的hashcode还是自己本身的数值
+             */
+            int maxValue = 10000;
+            int keySection = 0;
+            // key值大于maxValue 并且numReduceTasks大于1个才需要分区，否则直接返回0
+            if (numReduceTasks > 1 && k.hashCode() > maxValue) {
+                int sectionValue = k.hashCode() / maxValue;
+                keySection = sectionValue  / numReduceTasks;
+            }
+            return keySection;
         }
     }
 
@@ -105,12 +127,14 @@ public class WordCountAndSorted {
         /**
          * sort wordcount job
          */
-        /*
+
         Job sortJob = Job.getInstance(conf, "sort job");
         sortJob.setJarByClass(WordCountAndSorted.class);
         sortJob.setMapperClass(WordCountSortMapper.class);
         sortJob.setReducerClass(WordCountSortReduce.class);
         sortJob.setSortComparatorClass(IntKeyComparator.class);
+        sortJob.setPartitionerClass(KeySectionPartitioner.class);
+
         sortJob.setOutputKeyClass(IntWritable.class);
         sortJob.setOutputValueClass(Text.class);
 
@@ -118,13 +142,13 @@ public class WordCountAndSorted {
         sortJob.setOutputFormatClass(TextOutputFormat.class);
 
         //sortJob.setNumReduceTasks(1);
-        FileInputFormat.addInputPath(sortJob, new Path("/zx_deploy/out/part-r-00000"));
+        FileInputFormat.addInputPath(sortJob, new Path("/zx_deploy/out/part-r-*"));
         FileOutputFormat.setOutputPath(sortJob, new Path("/zx_deploy/sortout"));
         FileOutputFormat.setCompressOutput(sortJob,false); //设置输出是否压缩
         //FileOutputFormat.setOutputCompressorClass(sortJob, GzipCodec.class); //设置压缩格式
 
         System.out.println("started sort job .......");
         System.exit(sortJob.waitForCompletion(true) ? 0 : 1);
-        */
+
     }
 }
